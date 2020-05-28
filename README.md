@@ -1,2 +1,2 @@
-# ML_algorithms
-Machine Learning Algorithms
+# ml-algorithms
+Machine learning algorithms - built from scratch
