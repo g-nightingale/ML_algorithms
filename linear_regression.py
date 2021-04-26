@@ -17,7 +17,7 @@ class LinearRegression:
         """
         Fit linear regression model using gradient descent
 
-        Great article on l1 and l2 regularisation:
+        Excellent article on l1 and l2 regularisation:
         https://towardsdatascience.com/intuitions-on-l1-and-l2-regularisation-235f2db4c261
         """
 
