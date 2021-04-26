@@ -4,6 +4,8 @@ import numpy as np
 class LinearRegression:
     """
     Class to perform linear regression
+
+    Supports lasso (l1) and ridge (l2) regression
     """
 
     def __init__(self, alpha=0.1, epochs=100, reg=None, lambd=1.0):
@@ -39,10 +41,12 @@ class LinearRegression:
             # = (n * 1)
             if self.reg is None:
                 dw = np.dot(x.T, (np.dot(x, w) - y))
+            elif self.reg == 'l1':
+                dw = np.dot(x.T, (np.dot(x, w) - y)) + self.lambd * np.where(w > 0, 1, -1)
             elif self.reg == 'l2':
                 dw = np.dot(x.T, (np.dot(x, w) - y)) + 2 * self.lambd * w
             else:
-                raise ValueError('Only l2 regularisation supported')
+                raise ValueError('Unrecognised regularisation method. Use l1 or l2')
 
             w = w - self.alpha * dw
 
@@ -94,6 +98,11 @@ if __name__ == "__main__":
     lr.fit(x, y)
     y_pred = lr.predict(x)
 
+    # Fit another model using l1 regularisation (lasso regression)
+    lr_l1 = LinearRegression(epochs=100, alpha=0.01, reg='l1', lambd=10.0)
+    lr_l1.fit(x, y)
+    y_pred_l1 = lr_l1.predict(x)
+
     # Fit another model using l2 regularisation (ridge regression)
     lr_l2 = LinearRegression(epochs=100, alpha=0.01, reg='l2', lambd=10.0)
     lr_l2.fit(x, y)
@@ -104,6 +113,7 @@ if __name__ == "__main__":
     plt.title('Linear regression example')
     plt.scatter(x, y)
     plt.plot(x, y_pred, label='pred', color='red')
+    plt.plot(x, y_pred_l1, label='pred l1', color='orange')
     plt.plot(x, y_pred_l2, label='pred l2', color='green')
     plt.legend(loc='upper left')
     plt.show()
